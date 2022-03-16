@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>넌센스퀴즈</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</head>
+<body>
+  <h1>넌센스 Quiz 맞추기</h1>
+  <p>3문제 중복있음</p>
+  <div id="startBtn"><a href="#">시작</a></div>
+  <h3 id="quiz" hidden></h3>
+  <form id="answerInput" hidden>
+    <input type="text">
+  </form>
+  <p id="time"></p>
+  <p id="result"></p>
+
+  <script>
+    let quizArray=[
+      {quiz: "물고기의 반댓말은?", answer: "불고기"},
+      {quiz: "병아리가 잘먹는 약은?",answer: "삐약"},
+      {quiz: "소나무가 삐지면?",answer: "칫솔"},
+      {quiz: "반성문을 영어로 하면?",answer: "글로벌"},
+      {quiz: "세상에서 가장 뜨거운 과일은?",answer: "천도복숭아"}
+    ];
+    let cnt=0;
+    let score=0;
+    let timeStamp=0;
+    let i;
+    function interval() {
+      timeStamp++;
+      $("#time").text(timeStamp+"초");
+  }
+  let ready;
+
+    $("#startBtn").on("click", function() {
+      $("#answerInput").slideDown(100);
+      $("#quiz").show();
+      $("#result").text("");
+      quizStart();
+      $("#time").text("0초");
+      cnt=0;
+      score=0;
+      timeStamp=0;
+      ready=setInterval(interval, 1000);
+    });
+
+    $("#answerInput").on("submit", function(e) {
+      e.preventDefault();
+      const answer=$(this).children().first().val();
+      cnt++;
+      if(answer==quizArray[i].answer)
+      {
+        score++;
+      }
+      if(cnt>=3)
+      {
+        $("#result").text(`${cnt}문제중 ${score}문제 맞췄습니다`);
+        clearInterval(ready);
+        $(this).slideUp(100);
+        $("#quiz").hide();
+      }
+      else{
+        quizStart();
+      }
+      $(this).children().first().val("");
+    });
+
+    function quizStart() {
+      i=Math.floor(Math.random()*quizArray.length);
+      $("#quiz").text(quizArray[i].quiz);
+      $("#answerInput").children().first().focus();
+    }
+  </script>
+</body>
+</html>
